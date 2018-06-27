@@ -1,0 +1,22 @@
+{
+  "name": "tembusu-misty-bot",
+  "version": "0.0.1",
+  "description": "Tembusu's Personal Assistant",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "author": "tantra.anthony",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "cheerio": "^1.0.0-rc.2",
+    "express": "^4.16.3",
+    "firebase": "^4.12.1",
+    "moment": "^2.22.1",
+    "moment-timezone": "^0.5.16",
+    "request": "^2.85.0",
+    "request-promise": "^4.2.2"
+  }
+}
