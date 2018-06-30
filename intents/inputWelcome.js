@@ -1,25 +1,13 @@
-module.exports = function (req, res) {
-    console.log("inputWelcome suggestions initiated");
+var stringProcess = require('../strings/stringPreprocessing');
 
-    var headerArray = [
-        "Hi hooman! Welcome to Misty's humble abode! Ask Misty *anything* related to Tembusu!",
-        "Hiya hooman! Misty is here to assist! Ask Misty *anything*!",
-        "Hello hooman! Welcome! Ask Misty *anything* related to Tembusu College!",
-        "Greetings, hooman! Misty is here to help hooman with *Tembusu related matters*!",
-        "Hihi hooman! Misty is ready to help hooman with *all things Tembusu*!"
-    ]
+module.exports = function () {
+    console.log("inputWelcome initiated");
 
-    var helpArray = [
-        "I need help!",
-        "What can I ask you?",
-        "What do I ask you?",
-        "HELP",
-        "Help me understand what you do!"
-    ];
-
-    var header = headerArray[Math.floor(Math.random() * headerArray.length)];
-    var help = helpArray[Math.floor(Math.random() * helpArray.length)];
-
+    var header = stringProcess.headerTopic("welcome");
+    var help = stringProcess.inputWelcome('help');
+    var tncURL = stringProcess.tncURL();
+    var feedbackURL = stringProcess.feedbackURL();
+    
     var message = {
         payload: {
             telegram: {
@@ -36,13 +24,13 @@ module.exports = function (req, res) {
                         [
                             {
                                 text: "Terms & Conditions",
-                                url: "https://tinyurl.com/mistytnc"
+                                url: tncURL
                             }
                         ],
                         [
                             {
                                 text: "Send Feedback",
-                                url: "https://tinyurl.com/mistyform"
+                                url: feedbackURL
                             }
                         ]
                     ]
@@ -51,5 +39,5 @@ module.exports = function (req, res) {
         }
     }
 
-    res.send(message);
+    return message;
 }

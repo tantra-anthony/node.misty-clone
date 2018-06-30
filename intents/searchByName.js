@@ -1,22 +1,15 @@
 var firebaseMethods = require('../firebase/firebaseMethods');
 var textMessage = require('../templates/messageTemplate')
+var firebaseHandlers = require('../firebase/firebaseHandlers');
+var stringProcess = require('../strings/stringPreprocessing');
 
-//all sensitive information replaced with ####
-
-module.exports = function (paramName, req, res) {
+module.exports = function (paramName, res) {
     
-    var topReference = '####';
-    var key = '####';
+    var topReference = firebaseHandlers.firebaseReferences('search_by_name_reference');
+    var key = firebaseHandlers.firebaseReferences("generic_key");
     var param = paramName;
-
-    var suggestionRelatedArray = [
-        "Who is Anthony Tantra",
-        "Who is Tommy Koh",
-        "Who is Yee Han?"
-    ];
-
-    var suggestionRelated = suggestionRelatedArray[Math.floor(Math.random() * suggestionRelatedArray.length)];
-
+    
+    var suggestionRelated = stringProcess.searchByName("suggestion_related");
 
     console.log(param);
     console.log('searchByName initiated');
@@ -26,22 +19,12 @@ module.exports = function (paramName, req, res) {
     promise.then(function(description) {
 
         if (description != null) {
-            
             console.log('description: ' + description);
             res.send(textMessage.messageWithMarkdownSuggestion(description, suggestionRelated));
             
         } else {
-
-            var nullResponseArray = [
-                "It seems that Misty is having a hard time processing this request! Hooman can visit [this link](https://tinyurl.com/mistyform) to submit a report!",
-                "Misty cannot seem to process this request, hooman! Please fill in [this form](https://tinyurl.com/mistyform) to submit a report!",
-                "Misty encountered an error! Please submit a report by filling up [this form](https://tinyurl.com/mistyform), hooman!"
-            ]
-
-            var nullResponse = nullResponseArray[Math.floor(Math.random() * nullResponseArray.length)];
-
+            var nullResponse = stringProcess.firebaseNullResponse();
             res.send(textMessage.messageWithMarkdownSuggestion(nullResponse, suggestionRelated));
-
         }
     })
 }

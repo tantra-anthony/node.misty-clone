@@ -1,3 +1,5 @@
+var stringProcess = require('../strings/stringPreprocessing');
+
 exports.simpleMessage = function(msg) {
     var message = {
         fulfillmentText: msg
@@ -35,42 +37,8 @@ exports.messageWithMarkdown = function(msg) {
 
 exports.messageWithMarkdownSuggestion = function (msg, suggestionRelated) {
 
-    var suggestionOneArray = [
-        "Tell me a joke",
-        "Can you tell me some jokes?",
-        "Dinner menu last Tuesday",
-        "Breakfast menu next Monday",
-        "Breakfast menu today",
-        "Who is Zachary Fong?",
-        "Who is Anthony Tantra?",
-        "Who is Gregory Clancey?",
-        "How do I book the Atlas?",
-        "How do I book the Abbey?",
-        "How do I make a booking for sem rooms?",
-        "Send me a joke!",
-        "Where is the printer?",
-        "Where is the CSC room?"
-    ];
-
-    var suggestionTwoArray = [
-        "Sapore Italiano promotion for tCard",
-        "tCard promotion for Butter My Buns",
-        "tCard promotions",
-        "Supper suggestions",
-        "Suggest some supper options",
-        "Do you know Al Amaan's phone number?",
-        "KFC phone number",
-        "Ameen's phone number",
-        "Tell me some Tembusu trivia",
-        "Random Tembusu trivia",
-        "Do you know any trivia about Tembusu?",
-        "Who is our master?",
-        "Who is the vice pres of the CSC?",
-        "Who is the Shan House Captain?"
-    ];
-
-    var suggestionOne = suggestionOneArray[Math.floor(Math.random() * suggestionOneArray.length)];
-    var suggestionTwo = suggestionTwoArray[Math.floor(Math.random() * suggestionTwoArray.length)];
+    var suggestionOne = stringProcess.templateSuggestionRelated("suggestion_one");
+    var suggestionTwo = stringProcess.templateSuggestionRelated("suggestion_two");
 
     var message = {
         payload: {
@@ -109,6 +77,8 @@ exports.messageWithMarkdownSuggestion = function (msg, suggestionRelated) {
 
 exports.fallbackMessageWithSuggestion = function (header, first, second) {
 
+    var feedbackURL = stringProcess.feedbackURL();
+
     var message = {
         payload: {
             telegram: {
@@ -131,7 +101,7 @@ exports.fallbackMessageWithSuggestion = function (header, first, second) {
                         [
                             {
                                 text: "Send Feedback",
-                                url: "https://tinyurl.com/mistyform"
+                                url: feedbackURL
                             }
                         ]
                     ]

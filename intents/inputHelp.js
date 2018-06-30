@@ -1,70 +1,20 @@
-module.exports = function (req, res) {
-    console.log("inputWelcome suggestions initiated");
+var stringProcess = require('../strings/stringPreprocessing');
 
-    var headerArray = [
-        "Here are some sample questions that hooman can ask!",
-        "Here are some samples that hooman can try asking Misty!",
-        "Hooman can try pressing one of Misty's sample questions below!",
-        "Hooman can ask some questions such as the samples here!"
-    ]
+module.exports = function () {
+    console.log("inputHelp initiated");
 
-    var searchLocationArray = [
-        "Where is Seminar Room 5?",
-        "Laundry location",
-        "Where is the pantry?",
-        "Where is the laundry?",
-        "Where is the vending machine?"
-    ];
-
-    var suggestSupperArray = [
-        "Supper suggestions",
-        "Help me suggest some supper options",
-        "Suggest some supper options"
-    ];
-
-    var whoIsArray = [
-        "Who is the CSC president?",
-        "Who is Anthony Tantra?",
-        "Who is our rector?",
-        "Who is the Ora House Captain?",
-        "Who is our supreme leader?",
-        "Who is the master of our college?",
-        "Who is the CSC vice president?"
-    ]
-
-    var howToBookArray = [
-        "how do I book the seminar rooms?",
-        "book abbey",
-        "make booking for box office",
-        "I want to book the lobby"
-    ]
-
-    var sendMenuArray = [
-        "can I have tomorrow's breakfast menu?",
-        "dinner menu today",
-        "menu for breakfast on 5 May 2018",
-        "breakfast menu next week"
-    ]
-    
-    var promotionArray = [
-        "Hwang's promotion",
-        "Spice Table tCard promotion",
-        "tCard promotions",
-        "tCard promotion @ Butter My Buns"
-    ]
-
-    var header = headerArray[Math.floor(Math.random() * headerArray.length)];
-    var searchLocation = searchLocationArray[Math.floor(Math.random() * searchLocationArray.length)];
-    var suggestSupper = suggestSupperArray[Math.floor(Math.random() * suggestSupperArray.length)];
-    var whoIs = whoIsArray[Math.floor(Math.random() * whoIsArray.length)];
-    var howToBook = howToBookArray[Math.floor(Math.random() * howToBookArray.length)];
-    var sendMenu = sendMenuArray[Math.floor(Math.random() * sendMenuArray.length)];
-    var promotion = promotionArray[Math.floor(Math.random() * promotionArray.length)];
+    var header = stringProcess.headerTopic("input_help");
+    var searchLocation = stringProcess.inputHelp("search_location");
+    var suggestSupper = stringProcess.inputHelp("suggest_supper");
+    var howToBook = stringProcess.inputHelp("how_to_book");
+    var sendMenu = stringProcess.inputHelp("send_menu");
+    var promotion = stringProcess.inputHelp("promotion");
 
     var message = {
         payload: {
             telegram: {
                 text: header,
+                parse_mode: "Markdown",
                 reply_markup: {
                     inline_keyboard: [
                         [
@@ -77,12 +27,6 @@ module.exports = function (req, res) {
                             {
                                 text: suggestSupper,
                                 callback_data: suggestSupper
-                            }
-                        ],
-                        [
-                            {
-                                text: whoIs,
-                                callback_data: whoIs
                             }
                         ],
                         [
@@ -109,5 +53,5 @@ module.exports = function (req, res) {
         }
     }
 
-    res.send(message);
+    return message;
 }

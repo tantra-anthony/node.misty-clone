@@ -23,7 +23,6 @@ var LUNCH_FALLBACK = [
     "Misty is sorry, hooman!😭😭 Lunch is not provided here!"
 ]
 
-//all sensitive information replaced with ####
 
 module.exports = function (menuTime, unformattedDate, req, res) {
 
@@ -34,7 +33,8 @@ module.exports = function (menuTime, unformattedDate, req, res) {
 
     console.log('date: ' + date);
 
-    var baseUrl = "####";
+    var baseUrl = "http://hg.sg/nus_ohs_admin/adminOHS/backend/script/index.php?" +
+        "controller=pjFront&action=pjActionLoadEventDetail&index=4455&cate=0&dt=" + date;
 
     console.log("fetching from: " + baseUrl);
 
@@ -83,8 +83,6 @@ module.exports = function (menuTime, unformattedDate, req, res) {
                         .html());
 
                     $('td.imgtd').each(function (i, elem) {
-
-                        //if else statement can be shortened to a normal array selection format with a for loop
 
                         if ($(this).html().includes('helpyourself')) {
 

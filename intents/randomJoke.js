@@ -1,28 +1,16 @@
 var request = require('request');
 var textMessage = require('../templates/messageTemplate');
+var stringProcess = require('../strings/stringPreprocessing');
+var apiHandler = require('../handlers/apiRequestHandler');
 
-var options = {
-    url: 'https://icanhazdadjoke.com/',
-    headers: {
-        'Accept': 'text/plain'
-    }
-}
-
-module.exports = function(req, res) {
+module.exports = function() {
     console.log("randomJoke initiated");
 
-    var suggestionRelatedArray = [
-        "Give me another joke please",
-        "Send me one more joke please",
-        "Tell me another joke"
-    ];
+    var suggestionRelated = stringProcess.randomJoke('suggestion_related');
 
-    var suggestionRelated = suggestionRelatedArray[Math.floor(Math.random() * suggestionRelatedArray.length)];
+    request.get(apiHandler.randomJoke(), function(error, response, body){
 
-
-    request.get(options, function(error, response, body){
-
-        res.send(textMessage.messageWithMarkdownSuggestion(body, suggestionRelated));
+        return textMessage.messageWithMarkdownSuggestion(body, suggestionRelated);
 
     })
 }

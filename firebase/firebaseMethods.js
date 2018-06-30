@@ -1,23 +1,13 @@
 var firebase = require('firebase');
-
-//identifier for firebase insert your own key
-//all sensitive information is replaced with ####
-var config = {
-    apiKey: "####",
-    authDomain: "####",
-    databaseURL: "####",
-    projectId: "####",
-    storageBucket: "####",
-    messagingSenderId: "####"
-};
+var firebaseHandlers = require('./firebaseHandlers')
 
 //start firebase app
-firebase.initializeApp(config);
+firebase.initializeApp(firebaseHandlers.firebaseOptions());
 console.log('Firebase Started');
 
 //connect to database
 var database = firebase.database();
-var ref = database.ref('####');
+var ref = database.ref(firebaseHandlers.firebaseReferences("root_reference"));
 
 exports.getChildAtOneNode = function (topReference, key, paramName) {
 
