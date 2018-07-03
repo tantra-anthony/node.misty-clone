@@ -1,3 +1,5 @@
+//this feature is still in beta
+
 var textMessage = require('../templates/messageTemplate');
 
 module.exports = function (req, res) {
