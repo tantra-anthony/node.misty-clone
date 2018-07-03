@@ -19,28 +19,31 @@ module.exports = function () {
     app.use(bodyParser.json());
 
     //setup POST routing
-    app.post('/####', function (req, res) {
+    app.post('/misty', function (req, res) {
         console.log('POST Request detected');
         requestHandler(req, res);
     });
 
+    app.post('/ping', function (req, res) {
+        console.log('app pinged from /ping');
+        res.send("I'm alive!");
+    });
+
     //get request to handle pinging app
-    app.get('/ping', function (req, res) {
+    /*app.get('/ping', function (req, res) {
 
         console.log('app pinged from /ping');
 
-    })
+    })*/
 
     //listen to port
     app.listen(PORT, function (req, res) {
         console.log("Server created\nListening to PORT: " + PORT);
-
         //ping heroku app every 5 minutes
         setInterval(function () {
-
             //request.get('any ngrok server');
-            request.get('####');
-
+            //request.get('####');
+            request.post('####');
         }, 300000);
 
     });

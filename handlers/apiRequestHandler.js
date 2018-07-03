@@ -1,7 +1,7 @@
 exports.randomJoke = function () {
 
     var options = {
-        url: 'https://icanhazdadjoke.com/',
+        url: '####',
         headers: {
             'Accept': 'text/plain'
         }

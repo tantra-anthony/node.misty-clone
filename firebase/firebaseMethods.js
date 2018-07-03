@@ -32,7 +32,20 @@ exports.getValuesFromNode = function (topReference, key) {
     return nameSearchRef.once('value').then(function (snapshot) {
         var childValue = snapshot.val();
         console.log('childValue: ' + childValue);
-
         return childValue;
     })
+}
+
+exports.getAllContentFromOneNode = function(node) {
+    console.log('getAllContentFromOneNode at: ' + node);
+    var nameSearchRef = ref.child(node);
+
+    return nameSearchRef.once('value').then(function (snapshot) {
+        var childArray = [];
+        snapshot.forEach(function (childSnapshot) {
+            childArray.push(childSnapshot.val());
+        })
+        console.log(childArray);
+        return(childArray);
+    });
 }

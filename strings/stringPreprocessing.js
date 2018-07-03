@@ -473,6 +473,65 @@ exports.firebaseNullResponse = function () {
 
 }
 
+exports.getRandomFromArray = function(arr) {
+    var random = arr[Math.floor(Math.random() * arr.length)];
+    return random;
+}
+
+exports.sendTrivia = function(topic) {
+    
+    var suggestionRelatedArray = [
+        "I want another Tembusu trivia!",
+        "Send me another Tembusu trivia!",
+        "Can you tell me another Tembusu trivia?"
+    ];
+    
+    switch (topic) {
+        case "suggestion_related":
+            return suggestionRelatedArray[Math.floor(Math.random() * suggestionRelatedArray.length)];
+            break;
+
+    }
+}
+
+exports.suggestSupperOptions = function (resto) {
+
+    var mcDonalds = "🍔 [McDonald's](https://www.mcdelivery.com.sg/)";
+    var pizzaHut = "🍕 [Pizza Hut](https://www.pizzahut.com.sg/)";
+    var canadianPizza = "🍕 [Canadian Pizza](https://www.canadian-pizza.com/)";
+    var kfc = "🍗 [Kentucky Fried Chicken](https://www.kfc.com.sg/)";
+    var alAmaan = "🍛 Al Amaan (+6567740637)";
+    var ameenMakanHouse = "🍛 Ameen Makan House (+6564651000)";
+    var dominoPizza = "🍕 [Domino's Pizza](https://www.dominos.com.sg/)";
+    var fongSeng = "🍚 Fong Seng Nasi Lemak (through [FoodPanda](https://www.foodpanda.sg/food/delivery/))";
+
+    switch (resto) {
+        case "mc_d":
+            return mcDonalds;
+
+        case "pizza_hut":
+            return pizzaHut;
+
+        case "canadian_pizza":
+            return canadianPizza;
+
+        case "kfc":
+            return kfc;
+
+        case "al_amaan":
+            return alAmaan;
+
+        case "ameen_makan_house":
+            return ameenMakanHouse;
+
+        case "domino_pizza":
+            return dominoPizza;
+
+        case "fong_seng":
+            return fongSeng;
+    }
+}
+
 exports.feedbackURL = function () {
     return "https://tinyurl.com/mistyform";
 }

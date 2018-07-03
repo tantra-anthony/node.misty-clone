@@ -2,7 +2,7 @@
   "name": "tembusu-misty-bot",
   "version": "0.2.1",
   "engines": {
-    "node": "8.6.0"
+    "node": "8.6.x"
   },
   "description": "Tembusu's Personal Assistant",
   "main": "index.js",

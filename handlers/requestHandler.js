@@ -11,20 +11,7 @@ var inputWelcome = require('../intents/inputWelcome');
 var inputUnknown = require('../intents/inputUnknown');
 var sendPromotion = require('../intents/sendPromotion');
 var fallbackBooking = require('../intents/fallbackBooking');
-
-var RAND_JOKE = "random.joke";
-var WHO_NAME = "who.name";
-var WHO_POSITION = "who.position";
-var WHERE_LOCATION = "where.location";
-var PHONE_NUMBER = "what.phone";
-var MAKE_BOOKING = "how.booking";
-var SUGGEST_SUPPER = "suggest.supper";
-var SEND_MENU = "send.menu";
-var INPUT_WELCOME = "input.welcome";
-var INPUT_HELP = "input.help";
-var INPUT_UNKNOWN = "input.unknown";
-var SEND_PROMOTION = "send.promotion";
-var FALLBACK_HOW_BOOKING = "fallback.how-booking";
+var sendTrivia = require('../intents/sendTrivia');
 
 module.exports = function (req, res) {
 
@@ -45,11 +32,19 @@ module.exports = function (req, res) {
             break;
 
         case INPUT_UNKNOWN:
-            res.send(inputUnknown());
+            var queryText = req.body.queryResult &&
+                req.body.queryResult.queryText ?
+                req.body.queryResult.queryText : null;
+
+            res.send(inputUnknown(queryText));
             break;
 
         case RAND_JOKE:
-            res.send(randomJoke());
+            randomJoke(res);
+            break;
+
+        case SEND_TRIVIA:
+            sendTrivia(res);
             break;
 
         case WHO_NAME:
@@ -108,7 +103,7 @@ module.exports = function (req, res) {
             console.log("Param Name: " + paramName);
 
             searchBooking(paramName, res);
-            
+
             break;
 
         case SUGGEST_SUPPER:

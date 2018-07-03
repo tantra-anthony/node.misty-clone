@@ -1,3 +1,5 @@
+//this code is still in beta, not refactored yet
+
 var rp = require('request-promise');
 var cheerio = require('cheerio');
 var textMessage = require('../templates/messageTemplate');

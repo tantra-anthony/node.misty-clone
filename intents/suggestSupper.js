@@ -4,14 +4,14 @@ var stringProcess = require('../strings/stringPreprocessing');
 
 var suggestionArray = [];
 
-var mcDonalds = "🍔 [McDonald's](https://www.mcdelivery.com.sg/)";
-var pizzaHut = "🍕 [Pizza Hut](https://www.pizzahut.com.sg/)";
-var canadianPizza = "🍕 [Canadian Pizza](https://www.canadian-pizza.com/)";
-var kfc = "🍗 [Kentucky Fried Chicken](https://www.kfc.com.sg/)";
-var alAmaan = "🍛 Al Amaan (+6567740637)";
-var ameenMakanHouse = "🍛 Ameen Makan House (+6564651000)";
-var dominoPizza = "🍕 [Domino's Pizza](https://www.dominos.com.sg/)";
-var fongSeng = "🍚 Fong Seng Nasi Lemak (through [FoodPanda](https://www.foodpanda.sg/food/delivery/))";
+var mcDonalds = stringProcess.suggestSupperOptions("mc_d");
+var pizzaHut = stringProcess.suggestSupperOptions("pizza_hut");
+var canadianPizza = stringProcess.suggestSupperOptions("canadian_pizza");
+var kfc = stringProcess.suggestSupperOptions("kfc");
+var alAmaan = stringProcess.suggestSupperOptions("al_amaan");
+var ameenMakanHouse = stringProcess.suggestSupperOptions("ameen_makan_house");
+var dominoPizza = stringProcess.suggestSupperOptions("domino_pizza");
+var fongSeng = stringProcess.suggestSupperOptions("fong_seng");
 
 module.exports = function () {
 
@@ -19,6 +19,7 @@ module.exports = function () {
 
     var currentTime = moment().tz('Asia/Singapore').format("H");
     console.log(currentTime);
+    suggestionArray = [];
 
     switch (currentTime) {
         case "0":
@@ -30,17 +31,13 @@ module.exports = function () {
 
             return handleArray(suggestionArray);
 
-            break;
         case "3":
         case "4":
         case "5":
         case "6":
         case "7":
             suggestionArray.push(mcDonalds);
-            
             return handleArray(suggestionArray);
-
-            break;
 
         case "8":
         case "9":
@@ -50,8 +47,6 @@ module.exports = function () {
 
             return handleArray(suggestionArray);
 
-            break;
-
         case "22":
             suggestionArray.push(mcDonalds);
             suggestionArray.push(alAmaan);
@@ -60,8 +55,6 @@ module.exports = function () {
             suggestionArray.push(fongSeng);
 
             return handleArray(suggestionArray)
-            
-            break;
 
         case "23":
             suggestionArray.push(mcDonalds);
@@ -70,8 +63,6 @@ module.exports = function () {
             suggestionArray.push(fongSeng);
 
             return handleArray(suggestionArray);
-
-            break;
 
         default:
             return pushAll();
