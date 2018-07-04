@@ -13,18 +13,14 @@ module.exports = function (paramName, res) {
     console.log(param);
     console.log('searchPhoneNumber initiated');
 
-    var promise = Promise.resolve(firebaseMethods.getChildAtOneNode(topReference, key, paramName));
-
-    promise.then(function(description) {
-        
-        if (description != null) {
-            var phoneNumberResponse = stringProcess.searchPhoneNumber("search_phone_number_response", description);
-            console.log('phoneNumberResponses: ' + phoneNumberResponse);
+    firebaseMethods.getChildAtOneNode(topReference, key, paramName).then(function(result) {
+        if (result != null) {
+            var phoneNumberResponse = stringProcess.searchPhoneNumber("search_phone_number_response", result);
+            console.log(result);
             res.send(textMessage.messageWithMarkdownSuggestion(phoneNumberResponse, suggestionRelated));
-
         } else {
             var nullResponse = stringProcess.firebaseNullResponse();
-            res.send(textMessage.messageWithMarkdownSuggestion(nullResponse, suggestionRelated));
+            res.send(textMessage.messageWithMarkdownSuggestion(nullResponse, suggestionRelated));            
         }
     })
 }

@@ -473,19 +473,61 @@ exports.firebaseNullResponse = function () {
 
 }
 
-exports.getRandomFromArray = function(arr) {
+exports.getRandomFromArray = function (arr) {
     var random = arr[Math.floor(Math.random() * arr.length)];
     return random;
 }
 
-exports.sendTrivia = function(topic) {
-    
+exports.sendTrivia = function (topic) {
+
     var suggestionRelatedArray = [
         "I want another Tembusu trivia!",
         "Send me another Tembusu trivia!",
         "Can you tell me another Tembusu trivia?"
     ];
-    
+
+    switch (topic) {
+        case "suggestion_related":
+            return suggestionRelatedArray[Math.floor(Math.random() * suggestionRelatedArray.length)];
+            break;
+
+    }
+}
+
+exports.sendMenu = function (menuTime, topic) {
+
+    var nullResponseArray = [
+        "Hmm... it seems that " + menuTime + " is not served at this time. 😢",
+        "Sorry hooman, " + menuTime + " is not served at this time. 😢",
+        "Looks like " + menuTime + " is not served at this specific time... 😢"
+    ];
+
+    var suggestionRelatedArray = [
+        "breakfast menu tomorrow",
+        "dinner menu today",
+        "breakfast menu today",
+        "dinner menu tomorrow"
+    ];
+
+    switch (topic) {
+        case "null_response":
+            return nullResponseArray[Math.floor(Math.random() * nullResponseArray.length)];
+            break;
+
+        case "suggestion_related":
+            return suggestionRelatedArray[Math.floor(Math.random() * suggestionRelatedArray.length)]
+            break;
+    }
+
+}
+
+exports.whatGeneral = function (topic) {
+    var suggestionRelatedArray = [
+        "What is the CSC",
+        "What is Tchoukball?",
+        "Do you know what tStudios is?"
+    ];
+
     switch (topic) {
         case "suggestion_related":
             return suggestionRelatedArray[Math.floor(Math.random() * suggestionRelatedArray.length)];

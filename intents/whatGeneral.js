@@ -5,20 +5,19 @@ var stringProcess = require('../strings/stringPreprocessing');
 
 module.exports = function (paramName, res) {
     
-    var topReference = firebaseHandlers.firebaseReferences("search_booking_reference");
+    var topReference = firebaseHandlers.firebaseReferences('what_general');
     var key = firebaseHandlers.firebaseReferences("generic_key");
     var param = paramName;
-
-    var suggestionRelated = stringProcess.searchBooking("suggestion_related");
+    
+    var suggestionRelated = stringProcess.whatGeneral("suggestion_related");
 
     console.log(param);
-    console.log('searchBooking initiated');
+    console.log('whatGeneral initiated');
 
     firebaseMethods.getChildAtOneNode(topReference, key, paramName).then(function(result) {
         if (result != null) {
             console.log(result);
-            var bookingResponse = stringProcess.searchBooking("search_booking_response", result);
-            res.send(textMessage.messageWithMarkdownSuggestion(bookingResponse, suggestionRelated));
+            res.send(textMessage.messageWithMarkdownSuggestion(result, suggestionRelated));
         } else {
             var nullResponse = stringProcess.firebaseNullResponse();
             res.send(textMessage.messageWithMarkdownSuggestion(nullResponse, suggestionRelated));            

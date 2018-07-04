@@ -14,16 +14,13 @@ module.exports = function (paramName, res) {
     console.log(param);
     console.log('searchLocation initiated');
 
-    var promise = Promise.resolve(firebaseMethods.getChildAtOneNode(topReference, key, paramName));
-
-    promise.then(function(description) {
-        if (description != null) {
-            console.log('description: ' + description);
-            res.send(textMessage.messageWithMarkdownSuggestion(description, suggestionRelated));
+    firebaseMethods.getChildAtOneNode(topReference, key, paramName).then(function(result) {
+        if (result != null) {
+            console.log(result);
+            res.send(textMessage.messageWithMarkdownSuggestion(result, suggestionRelated));
         } else {
             var nullResponse = stringProcess.firebaseNullResponse();
-            res.send(textMessage.messageWithMarkdownSuggestion(nullResponse, suggestionRelated));
+            res.send(textMessage.messageWithMarkdownSuggestion(nullResponse, suggestionRelated));            
         }
-            
     })
 }

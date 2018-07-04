@@ -12,6 +12,7 @@ var inputUnknown = require('../intents/inputUnknown');
 var sendPromotion = require('../intents/sendPromotion');
 var fallbackBooking = require('../intents/fallbackBooking');
 var sendTrivia = require('../intents/sendTrivia');
+var whatGeneral = require("../intents/whatGeneral");
 
 module.exports = function (req, res) {
 
@@ -45,6 +46,14 @@ module.exports = function (req, res) {
 
         case SEND_TRIVIA:
             sendTrivia(res);
+            break;
+
+        case WHAT_GENERAL:
+            var paramName = req.body.queryResult &&
+                req.body.queryResult.parameters.general ?
+                req.body.queryResult.parameters.general : null;
+
+            whatGeneral(paramName, res);
             break;
 
         case WHO_NAME:

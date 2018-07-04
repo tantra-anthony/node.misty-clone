@@ -8,10 +8,9 @@ module.exports = function (res) {
     var suggestionRelated = stringProcess.sendTrivia("suggestion_related");
     console.log('sendTrivia initiated');
 
-    var promise = Promise.resolve(firebaseMethods.getAllContentFromOneNode(topReference));
-    promise.then(function (description) {
-        if (description != null) {
-            var message = stringProcess.getRandomFromArray(description);
+    firebaseMethods.getAllChildValuesAsArray(topReference).then(function (result) {
+        if (result != null) {
+            var message = stringProcess.getRandomFromArray(result);
             console.log('trivia: ' + message);
             res.send(textMessage.messageWithMarkdownSuggestion(message, suggestionRelated));
         } else {

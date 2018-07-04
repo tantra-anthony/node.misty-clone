@@ -1,9 +1,10 @@
-//this code is still in beta, not refactored yet
+//this code is still under review
 
 var rp = require('request-promise');
 var cheerio = require('cheerio');
 var textMessage = require('../templates/messageTemplate');
 var moment = require('moment-timezone');
+var stringProcess = require('../strings/stringPreprocessing');
 
 var HEADER_BREAKFAST = "☀️☀️*Breakfast*☀️☀️\n_available from 07:00 to 10:30_\n";
 var HEADER_DINNER = "🌑🌑*Dinner*🌑🌑\n_available from 17:30 to 21:30_\n"
@@ -35,8 +36,7 @@ module.exports = function (menuTime, unformattedDate, req, res) {
 
     console.log('date: ' + date);
 
-    var baseUrl = "http://hg.sg/nus_ohs_admin/adminOHS/backend/script/index.php?" +
-        "controller=pjFront&action=pjActionLoadEventDetail&index=4455&cate=0&dt=" + date;
+    var baseUrl = "####";
 
     console.log("fetching from: " + baseUrl);
 
@@ -51,7 +51,7 @@ module.exports = function (menuTime, unformattedDate, req, res) {
 
     rp(options)
         .then(function (base) {
-
+            
             var menuArray = [];
 
             if (menuTime == 'breakfast') {
@@ -73,132 +73,139 @@ module.exports = function (menuTime, unformattedDate, req, res) {
 
             console.log(menuArray);
 
-            base('.pull-left').each(function () {
+            if (base(this).html() != null) {
 
-                if (base(this)
-                    .text()
-                    .includes(menuTime.toUpperCase())) {
+                base('.pull-left').each(function () {
 
-                    const $ = cheerio.load(base(this)
-                        .parent()
-                        .parent()
-                        .html());
-
-                    $('td.imgtd').each(function (i, elem) {
-
-                        if ($(this).html().includes('helpyourself')) {
-
-                            var dummy = TITLE_HELPYOURSELF +
-                                $(this)
-                                    .next()
-                                    .text()
-                                    .trim()
-                                    .replace(/\n+/g, '\n');
-
-                            menuArray.push(dummy);
-
-                        } else if ($(this).html().includes('western')) {
-
-                            var dummy = TITLE_WESTERN +
-                                $(this)
-                                    .next()
-                                    .text()
-                                    .trim()
-                                    .replace(/\n+/g, '\n');
-
-                            menuArray.push(dummy);
-
-                        } else if ($(this).html().includes('asian')) {
-
-                            var dummy = TITLE_ASIAN +
-                                $(this)
-                                    .next()
-                                    .text()
-                                    .trim()
-                                    .replace(/\n+/g, '\n');
-
-                            menuArray.push(dummy);
-
-                        } else if ($(this).html().includes('veg')) {
-
-                            var dummy = TITLE_VEGETARIAN +
-                                $(this)
-                                    .next()
-                                    .text()
-                                    .trim()
-                                    .replace(/\n+/g, '\n');
-
-                            menuArray.push(dummy);
-
-                        } else if ($(this).html().includes('noodle')) {
-
-                            var dummy = TITLE_NOODLE +
-                                $(this)
-                                    .next()
-                                    .text()
-                                    .trim()
-                                    .replace(/\n+/g, '\n');
-
-                            menuArray.push(dummy);
-
-                        } else if ($(this).html().includes('specials')) {
-
-                            var dummy = TITLE_SOTD +
-                                $(this)
-                                    .next()
-                                    .text()
-                                    .trim()
-                                    .replace(/\n+/g, '\n');
-
-                            menuArray.push(dummy);
-
-                        } else if ($(this).html().includes('muslim')) {
-
-                            var dummy = TITLE_HALAL +
-                                $(this)
-                                    .next()
-                                    .text()
-                                    .trim()
-                                    .replace(/\n+/g, '\n');
-
-                            menuArray.push(dummy);
-
-                        } else if ($(this).html().includes('grab')) {
-
-                            var dummy = TITLE_GRAB +
-                                $(this)
-                                    .next()
-                                    .text()
-                                    .trim()
-                                    .replace(/\n+/g, '\n');
-
-                            menuArray.push(dummy);
-
-                        } else if ($(this).html().includes('indian')) {
-
-                            var dummy = TITLE_INDIAN +
-                                $(this)
-                                    .next()
-                                    .text()
-                                    .trim()
-                                    .replace(/\n+/g, '\n');
-
-                            menuArray.push(dummy);
-
-                        }
-
-                    });
-
-                    menuArray.push(ENRICHMENT_MESSAGE);
-
-                    menuText = menuArray.join('\n\n');
-
-                    res.send(textMessage.messageWithMarkdown(menuText));
-
-                };
-
-            });
-
+                    if (base(this)
+                        .text()
+                        .includes(menuTime.toUpperCase())) {
+    
+                        const $ = cheerio.load(base(this)
+                            .parent()
+                            .parent()
+                            .html());
+    
+                        $('td.imgtd').each(function (i, elem) {
+    
+                            if ($(this).html().includes('helpyourself')) {
+    
+                                var dummy = TITLE_HELPYOURSELF +
+                                    $(this)
+                                        .next()
+                                        .text()
+                                        .trim()
+                                        .replace(/\n+/g, '\n');
+    
+                                menuArray.push(dummy);
+    
+                            } else if ($(this).html().includes('western')) {
+    
+                                var dummy = TITLE_WESTERN +
+                                    $(this)
+                                        .next()
+                                        .text()
+                                        .trim()
+                                        .replace(/\n+/g, '\n');
+    
+                                menuArray.push(dummy);
+    
+                            } else if ($(this).html().includes('asian')) {
+    
+                                var dummy = TITLE_ASIAN +
+                                    $(this)
+                                        .next()
+                                        .text()
+                                        .trim()
+                                        .replace(/\n+/g, '\n');
+    
+                                menuArray.push(dummy);
+    
+                            } else if ($(this).html().includes('veg')) {
+    
+                                var dummy = TITLE_VEGETARIAN +
+                                    $(this)
+                                        .next()
+                                        .text()
+                                        .trim()
+                                        .replace(/\n+/g, '\n');
+    
+                                menuArray.push(dummy);
+    
+                            } else if ($(this).html().includes('noodle')) {
+    
+                                var dummy = TITLE_NOODLE +
+                                    $(this)
+                                        .next()
+                                        .text()
+                                        .trim()
+                                        .replace(/\n+/g, '\n');
+    
+                                menuArray.push(dummy);
+    
+                            } else if ($(this).html().includes('specials')) {
+    
+                                var dummy = TITLE_SOTD +
+                                    $(this)
+                                        .next()
+                                        .text()
+                                        .trim()
+                                        .replace(/\n+/g, '\n');
+    
+                                menuArray.push(dummy);
+    
+                            } else if ($(this).html().includes('muslim')) {
+    
+                                var dummy = TITLE_HALAL +
+                                    $(this)
+                                        .next()
+                                        .text()
+                                        .trim()
+                                        .replace(/\n+/g, '\n');
+    
+                                menuArray.push(dummy);
+    
+                            } else if ($(this).html().includes('grab')) {
+    
+                                var dummy = TITLE_GRAB +
+                                    $(this)
+                                        .next()
+                                        .text()
+                                        .trim()
+                                        .replace(/\n+/g, '\n');
+    
+                                menuArray.push(dummy);
+    
+                            } else if ($(this).html().includes('indian')) {
+    
+                                var dummy = TITLE_INDIAN +
+                                    $(this)
+                                        .next()
+                                        .text()
+                                        .trim()
+                                        .replace(/\n+/g, '\n');
+    
+                                menuArray.push(dummy);
+    
+                            }
+    
+                        });
+    
+                        menuArray.push(ENRICHMENT_MESSAGE);
+    
+                        menuText = menuArray.join('\n\n');
+    
+                        res.send(textMessage.messageWithMarkdown(menuText));
+    
+                    };
+    
+                });
+            } else {
+                var nullResponse = stringProcess.sendMenu(menuTime, "null_response");
+                var suggestionRelated = stringProcess.sendMenu(menuTime, "suggestion_related");
+                res.send(textMessage.messageWithMarkdownSuggestion(nullResponse, suggestionRelated));
+            }
+            
         })
         .catch(function (err) {
             console.log("error: " + err);

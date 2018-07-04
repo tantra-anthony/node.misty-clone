@@ -9,20 +9,19 @@ console.log('Firebase Started');
 var database = firebase.database();
 var ref = database.ref(firebaseHandlers.firebaseReferences("root_reference"));
 
-exports.getChildAtOneNode = function (topReference, key, paramName) {
+exports.getChildAtOneNode = async function (topReference, key, paramName) {
 
     console.log('getChildAtLastNode at ' + topReference + ' with paramName ' + paramName);
 
-    var nameSearchRef = ref.child(topReference).child(paramName).child(key);
+    var nameSearchSnapshot = await ref.child(topReference)
+                            .child(paramName)
+                            .child(key)
+                            .once('value');
 
-    return nameSearchRef.once('value').then(function (snapshot) {
-        var childValue = snapshot.val();
-        console.log('childValue: ' + childValue);
-
-        return childValue;
-    })
+    return nameSearchSnapshot.val();
 }
 
+//this code is KIV'ed
 exports.getValuesFromNode = function (topReference, key) {
 
     console.log('getValuesFromNode at ' + topReference + ' with key ' + key);
@@ -36,16 +35,16 @@ exports.getValuesFromNode = function (topReference, key) {
     })
 }
 
-exports.getAllContentFromOneNode = function(node) {
+exports.getAllChildValuesAsArray = async function(node) {
     console.log('getAllContentFromOneNode at: ' + node);
-    var nameSearchRef = ref.child(node);
+    var searchRef = await ref.child(node)
+                            .once('value');
 
-    return nameSearchRef.once('value').then(function (snapshot) {
-        var childArray = [];
-        snapshot.forEach(function (childSnapshot) {
-            childArray.push(childSnapshot.val());
-        })
-        console.log(childArray);
-        return(childArray);
-    });
+    var childArray = [];
+    searchRef.forEach(function(childSnapshot) {
+        childArray.push(childSnapshot.val());    
+    })
+
+    console.log(childArray);
+    return childArray;
 }
