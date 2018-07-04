@@ -35,8 +35,7 @@ module.exports = function (menuTime, unformattedDate, req, res) {
 
     console.log('date: ' + date);
 
-    var baseUrl = "http://hg.sg/nus_ohs_admin/adminOHS/backend/script/index.php?" +
-        "controller=pjFront&action=pjActionLoadEventDetail&index=4455&cate=0&dt=" + date;
+    var baseUrl = "####";
 
     console.log("fetching from: " + baseUrl);
 
