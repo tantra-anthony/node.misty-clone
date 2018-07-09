@@ -29,6 +29,12 @@ exports.headerTopic = function (topic) {
         "Misty cannot help hooman with that! Probably hooman can try some of these suggestions."
     ]
 
+    var sendFormByLinkArray = [
+        "Sure thing hooman! Here you go! 😁",
+        "Alrighty! Here it is! Tadaaa! 👍🏻",
+        "Alright sure! I'll just put the link down here! 💌💌"
+    ]
+
     switch (topic) {
         case "input_help":
             header = inputHelpArray[Math.floor(Math.random() * inputHelpArray.length)];
@@ -40,6 +46,10 @@ exports.headerTopic = function (topic) {
 
         case "input_unknown":
             header = inputUnknownArray[Math.floor(Math.random() * inputUnknownArray.length)];
+            break;
+
+        case "send_form_by_link":
+            header = sendFormByLinkArray[Math.floor(Math.random() * sendFormByLinkArray.length)];
             break;
 
         default:
@@ -253,7 +263,7 @@ exports.templateSuggestionRelated = function (topic) {
 exports.searchBooking = function (topic, description) {
 
     var suggestionRelatedArray = [
-        "Booking of Amphithetre",
+        "Booking of Amphitheatre",
         "How to book the Tembusu Lobby",
         "How to book Sem Room 6",
         "Make booking for MPH"
@@ -464,9 +474,9 @@ exports.suggestSupper = function (topic) {
 exports.firebaseNullResponse = function () {
 
     var nullResponseArray = [
-        "It seems that Misty is having a hard time processing this request! Hooman can visit [this link](https://tinyurl.com/mistyform) to submit a report!",
-        "Misty cannot seem to process this request, hooman! Please fill in [this form](https://tinyurl.com/mistyform) to submit a report!",
-        "Misty encountered an error! Please submit a report by filling up [this form](https://tinyurl.com/mistyform), hooman!"
+        "It seems that Misty is having a hard time processing this request!😅😅 Hooman can visit [this link](https://tinyurl.com/mistyform) to submit a report!",
+        "Misty cannot seem to process this request, hooman!😅😅 Please fill in [this form](https://tinyurl.com/mistyform) to submit a report!",
+        "Misty encountered an error!😅😅 Please submit a report by filling up [this form](https://tinyurl.com/mistyform), hooman!"
     ]
 
     return nullResponseArray[Math.floor(Math.random() * nullResponseArray.length)];
@@ -572,6 +582,91 @@ exports.suggestSupperOptions = function (resto) {
         case "fong_seng":
             return fongSeng;
     }
+}
+
+exports.sendFormURLPlaceholder = function (topic) {
+    urlPlaceholder = "";
+
+    switch (topic) {
+        case "RFP":
+            urlPlaceholder = "Request for Payment Form"
+            break;
+
+        case "IGF":
+            urlPlaceholder = "IG Creation Form"
+            break;
+
+        case "ELF":
+            urlPlaceholder = "Equipment Loan Form";
+            break;
+
+        case "IGAL":
+            urlPlaceholder = "IG Asset List"
+            break;
+
+        case "STPF":
+            urlPlaceholder = "Student's Tea Proposal Form";
+            break;
+
+        case "STPT":
+            urlPlaceholder = "Student's Tea Poster Template";
+            break;
+
+        case "IGBP":
+            urlPlaceholder = "IG Budget Proposal Form"
+            break;
+    }
+
+    return urlPlaceholder;
+}
+
+exports.sendFormFallbackEmail = function() {
+
+    var fallbackArray = [
+        "Sure thing! Can you send Misty your e-mail please? 😁",
+        "Will do! Can you please type out your e-mail for Misty, please? ✉️✉️",
+        "Sure! Please help Misty type hooman's e-mail! ✉️"
+    ]
+
+    return fallbackArray[Math.floor(Math.random() * fallbackArray.length)];
+}
+
+exports.sendFormPathToFile = function(file) {
+
+    switch (file) {
+        case "RFP":
+            return './forms/RFP.pdf'
+
+        case "IGF":
+            return './forms/IGF.doc'
+
+        case "ELF":
+            return './forms/ELF.pdf'
+
+        case "IGAL":
+            return './forms/IGAL.xls'
+
+        case "STPF":
+            return './forms/STPF.docx'
+
+        case "STPT":
+            return './forms/STPT.docx'
+
+        case "IGBP":
+            return './forms/IGBP.doc'        
+    }
+
+}
+
+exports.sendFormSuccessMessage = function() {
+    var successArray = [
+        "Alright! Misty has sent hooman an e-mail! It will be there shortly! ✈️✈️",
+        "Nice! Misty should have sent hooman an e-mail with an attachment! 📩📩",
+        "Sent! Hooman should be receiving an e-mail from Misty shortly! 😁",
+        "Yay, the message is sending now! Check your e-mail in a while! 😁📩"
+    ]
+
+    return successArray[Math.floor(Math.random() * successArray.length)];
 }
 
 exports.feedbackURL = function () {

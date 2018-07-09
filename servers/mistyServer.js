@@ -1,6 +1,7 @@
 var express = require('express');
 var request = require('request');
 var bodyParser = require('body-parser');
+var config = require('./serverConfig');
 
 var requestHandler = require('../handlers/requestHandler');
 
@@ -19,20 +20,20 @@ module.exports = function () {
     app.use(bodyParser.json());
 
     //setup POST routing
-    app.post('/misty', function (req, res) {
+    app.post(config.serverMainRoot, function (req, res) {
         console.log('POST Request detected');
         requestHandler(req, res);
     });
 
-    app.post('/ping', function (req, res) {
-        console.log('app pinged from /ping');
+    app.post(config.serverPingIn, function (req, res) {
+        console.log('app pinged');
         res.send("I'm alive!");
     });
 
     //get request to handle pinging app
-    /*app.get('/ping', function (req, res) {
+    /*app.get(config.serverPingIn, function (req, res) {
 
-        console.log('app pinged from /ping');
+        console.log('app pinged');
 
     })*/
 
@@ -42,8 +43,8 @@ module.exports = function () {
         //ping heroku app every 5 minutes
         setInterval(function () {
             //request.get('any ngrok server');
-            //request.get('####');
-            request.post('####');
+            //request.get(config.serverPingOut);
+            request.post(config.serverPingOut);
         }, 300000);
 
     });

@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-//this code is still under review
-=======
-//this feature is still in beta
->>>>>>> 71cd28acb0d5efe7d61d331ff98a659ae2a4f441
-
 var textMessage = require('../templates/messageTemplate');
 
 module.exports = function (req, res) {

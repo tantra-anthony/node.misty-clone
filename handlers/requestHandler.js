@@ -13,6 +13,25 @@ var sendPromotion = require('../intents/sendPromotion');
 var fallbackBooking = require('../intents/fallbackBooking');
 var sendTrivia = require('../intents/sendTrivia');
 var whatGeneral = require("../intents/whatGeneral");
+var sendForm = require('../intents/sendForm');
+
+var RAND_JOKE = "random.joke";
+var WHO_NAME = "who.name";
+var WHO_POSITION = "who.position";
+var WHERE_LOCATION = "where.location";
+var PHONE_NUMBER = "what.phone";
+var MAKE_BOOKING = "how.booking";
+var SUGGEST_SUPPER = "suggest.supper";
+var SEND_MENU = "send.menu";
+var INPUT_WELCOME = "input.welcome";
+var INPUT_HELP = "input.help";
+var INPUT_UNKNOWN = "input.unknown";
+var SEND_PROMOTION = "send.promotion";
+var FALLBACK_HOW_BOOKING = "fallback.how-booking";
+var SEND_TRIVIA = "send.trivia";
+var WHAT_GENERAL = "what.general";
+var SEND_FORM = "send-form";
+var SEND_FORM_EMAIL = "send-form.email";
 
 module.exports = function (req, res) {
 
@@ -150,6 +169,55 @@ module.exports = function (req, res) {
 
         case FALLBACK_HOW_BOOKING:
             fallbackBooking(req, res);
+            break;
+
+        case SEND_FORM:
+            var formType = req.body.queryResult &&
+                req.body.queryResult.parameters.forms ?
+                req.body.queryResult.parameters.forms : null;
+
+            var sendMethod = req.body.queryResult &&
+                req.body.queryResult.parameters.sendMethod ?
+                req.body.queryResult.parameters.sendMethod : null;
+
+            var email = req.body.queryResult &&
+                req.body.queryResult.parameters.email ?
+                req.body.queryResult.parameters.email : null;
+
+            console.log("Action name: " + action);
+            console.log("formType: " + formType);
+            console.log("sendMethod: " + sendMethod);
+            console.log("Email: " + email);
+
+            if (email == null) {  
+                if (sendMethod == null || sendMethod == "link") {
+                    sendForm.sendByLink(formType, res);
+                } else {
+                    sendForm.fallbackEmail(res);
+                }
+            } else {
+                sendForm.sendByEmail(formType, email, res);
+            }
+            
+            break;
+
+        case SEND_FORM_EMAIL:
+            var email = req.body.queryResult &&
+                req.body.queryResult.parameters.email ?
+                req.body.queryResult.parameters.email : null;
+
+            var formType = req.body.queryResult.outputContexts &&
+                req.body.queryResult.outputContexts[0].parameters.forms ?
+                req.body.queryResult.outputContexts[0].parameters.forms : null;
+
+            console.log("Action name: " + action);
+            console.log("formType: " + formType);
+            console.log("Email: " + email);
+            
+            if (email != null) {
+                sendForm.sendByEmail(formType, email, res);
+            }
+
             break;
 
     }

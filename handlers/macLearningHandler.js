@@ -1,5 +1,5 @@
 /*
 
-insert req to machine learning algorithm here
+insert machine learning algorithm here
 
 */

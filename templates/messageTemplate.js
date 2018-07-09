@@ -75,6 +75,30 @@ exports.messageWithMarkdownSuggestion = function (msg, suggestionRelated) {
     
 }
 
+exports.messageWithOneLink = function (header, urlPlaceholder, urlLink) {
+
+    var message = {
+        payload: {
+            telegram: {
+                text: header,
+                parse_mode: "Markdown",
+                reply_markup: {
+                    inline_keyboard: [
+                        [
+                            {
+                                text: urlPlaceholder,
+                                url: urlLink
+                            }
+                        ]
+                    ]
+                }
+            }
+        }
+    }
+
+    return message;
+}
+
 exports.fallbackMessageWithSuggestion = function (header, first, second) {
 
     var feedbackURL = stringProcess.feedbackURL();
