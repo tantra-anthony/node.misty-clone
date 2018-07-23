@@ -504,6 +504,23 @@ exports.sendTrivia = function (topic) {
     }
 }
 
+exports.whoInCommittee = function (topic) {
+
+    var suggestionRelatedArray = [
+        "Who are the members of the CSC?",
+        "Who is inside the CSC?",
+        "Who are in tStudios"
+    ];
+
+    switch (topic) {
+        case "suggestion_related":
+            return suggestionRelatedArray[Math.floor(Math.random() * suggestionRelatedArray.length)];
+            break;
+
+    }
+
+}
+
 exports.sendMenu = function (menuTime, topic) {
 
     var nullResponseArray = [

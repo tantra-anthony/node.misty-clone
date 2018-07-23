@@ -14,6 +14,7 @@ var fallbackBooking = require('../intents/fallbackBooking');
 var sendTrivia = require('../intents/sendTrivia');
 var whatGeneral = require("../intents/whatGeneral");
 var sendForm = require('../intents/sendForm');
+var whoInCommittee = require('../intents/whoInCommittee');
 
 var RAND_JOKE = "random.joke";
 var WHO_NAME = "who.name";
@@ -32,6 +33,7 @@ var SEND_TRIVIA = "send.trivia";
 var WHAT_GENERAL = "what.general";
 var SEND_FORM = "send-form";
 var SEND_FORM_EMAIL = "send-form.email";
+var WHO_IN_COMMITTEE = "who.in"
 
 module.exports = function (req, res) {
 
@@ -85,6 +87,14 @@ module.exports = function (req, res) {
 
             searchByName(paramName, res);
 
+            break;
+
+        case WHO_IN_COMMITTEE:
+            var paramName = req.body.queryResult &&
+                req.body.queryResult.parameters.general ?
+                req.body.queryResult.parameters.general : null;
+
+            whoInCommittee(paramName, res);
             break;
 
         case WHERE_LOCATION:
@@ -189,7 +199,7 @@ module.exports = function (req, res) {
             console.log("sendMethod: " + sendMethod);
             console.log("Email: " + email);
 
-            if (email == null) {  
+            if (email == null) {
                 if (sendMethod == null || sendMethod == "link") {
                     sendForm.sendByLink(formType, res);
                 } else {
@@ -198,7 +208,7 @@ module.exports = function (req, res) {
             } else {
                 sendForm.sendByEmail(formType, email, res);
             }
-            
+
             break;
 
         case SEND_FORM_EMAIL:
@@ -213,7 +223,7 @@ module.exports = function (req, res) {
             console.log("Action name: " + action);
             console.log("formType: " + formType);
             console.log("Email: " + email);
-            
+
             if (email != null) {
                 sendForm.sendByEmail(formType, email, res);
             }

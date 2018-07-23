@@ -64,5 +64,9 @@ exports.firebaseReferences = function (node) {
         case "send_form_reference":
             return firebaseConfig.sendFormReference;
             break;
+
+        case "who_in_committee":
+            return firebaseConfig.whoInCommittee;
+            break;
     }
 }
