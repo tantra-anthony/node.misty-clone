@@ -12,7 +12,7 @@ var TITLE_HELPYOURSELF = "🥣 *Help Yourself* ☕️\n";
 var TITLE_WESTERN = "🍔 *Western* 🍟\n";
 var TITLE_ASIAN = "🍣 *Asian* 🍱\n";
 var TITLE_VEGETARIAN = "🥦 *Vegetarian* 🥕\n";
-var TITLE_NOODLE = "🍜 *Noodle* 🍝\m"
+var TITLE_NOODLE = "🍜 *Noodle* 🍝\n"
 var TITLE_SOTD = "⭐️ *Special of the Day* ⭐️\n";
 var TITLE_HALAL = "🥩 *Malay (Halal)* 🍗\n";
 var TITLE_GRAB = "🥪 *Grab & Go* 🥤\n";
@@ -29,15 +29,22 @@ var LUNCH_FALLBACK = [
 
 module.exports = function (menuTime, unformattedDate, req, res) {
 
-    var date = moment(unformattedDate).tz('Asia/Singapore').format('YYYY-MM-DD');
-    var displayDate = moment(unformattedDate).tz('Asia/Singapore').format('dddd, DD MMM YYYY');
+    var date;
+    var displayDate;
+
+    if (unformattedDate != null) {
+        date = moment(unformattedDate).tz('Asia/Singapore').format('YYYY-MM-DD');
+        displayDate = moment(unformattedDate).tz('Asia/Singapore').format('dddd, DD MMM YYYY');
+        console.log('date: ' + date);
+    } else {
+        date = moment().tz('Asia/Singapore').format('YYYY-MM-DD');
+        displayDate = moment().tz('Asia/Singapore').format('dddd, DD MMM YYYY');
+        console.log('date: ' + date);
+    }
 
     var menuText = "";
 
-    console.log('date: ' + date);
-
-    var baseUrl = "####" +
-        "####" + date;
+    var baseUrl = "####";
 
     console.log("fetching from: " + baseUrl);
 
@@ -51,7 +58,7 @@ module.exports = function (menuTime, unformattedDate, req, res) {
     }
 
     rp(options)
-        .then(function (base) {
+        .then(function(base) {
             
             var menuArray = [];
 
@@ -72,12 +79,12 @@ module.exports = function (menuTime, unformattedDate, req, res) {
 
             }
 
-            console.log(menuArray);
+            // TO DO: clean up code!
 
-            if (base(this).html() != null) {
+            if (base('.pjPecEventContainer').text().includes(menuTime.toUpperCase())) {
 
-                base('.pull-left').each(function () {
-
+                base('.pull-left').each(function() {
+                    
                     if (base(this)
                         .text()
                         .includes(menuTime.toUpperCase())) {
@@ -87,128 +94,83 @@ module.exports = function (menuTime, unformattedDate, req, res) {
                             .parent()
                             .html());
     
-                        $('td.imgtd').each(function (i, elem) {
+                        $('td.imgtd').each(function() {
     
                             if ($(this).html().includes('helpyourself')) {
     
-                                var dummy = TITLE_HELPYOURSELF +
-                                    $(this)
-                                        .next()
-                                        .text()
-                                        .trim()
-                                        .replace(/\n+/g, '\n');
-    
+                                var dummy = filterData(TITLE_HELPYOURSELF, $(this));
+                                console.log($(this).next().html().replace);
                                 menuArray.push(dummy);
     
                             } else if ($(this).html().includes('western')) {
     
-                                var dummy = TITLE_WESTERN +
-                                    $(this)
-                                        .next()
-                                        .text()
-                                        .trim()
-                                        .replace(/\n+/g, '\n');
-    
+                                var dummy = filterData(TITLE_WESTERN, $(this));
                                 menuArray.push(dummy);
     
                             } else if ($(this).html().includes('asian')) {
     
-                                var dummy = TITLE_ASIAN +
-                                    $(this)
-                                        .next()
-                                        .text()
-                                        .trim()
-                                        .replace(/\n+/g, '\n');
-    
+                                var dummy = filterData(TITLE_ASIAN, $(this));
                                 menuArray.push(dummy);
     
                             } else if ($(this).html().includes('veg')) {
     
-                                var dummy = TITLE_VEGETARIAN +
-                                    $(this)
-                                        .next()
-                                        .text()
-                                        .trim()
-                                        .replace(/\n+/g, '\n');
-    
+                                var dummy = filterData(TITLE_VEGETARIAN, $(this));
                                 menuArray.push(dummy);
     
                             } else if ($(this).html().includes('noodle')) {
     
-                                var dummy = TITLE_NOODLE +
-                                    $(this)
-                                        .next()
-                                        .text()
-                                        .trim()
-                                        .replace(/\n+/g, '\n');
-    
+                                var dummy = filterData(TITLE_NOODLE, $(this));
                                 menuArray.push(dummy);
     
                             } else if ($(this).html().includes('specials')) {
     
-                                var dummy = TITLE_SOTD +
-                                    $(this)
-                                        .next()
-                                        .text()
-                                        .trim()
-                                        .replace(/\n+/g, '\n');
-    
+                                var dummy = filterData(TITLE_SOTD, $(this));
                                 menuArray.push(dummy);
     
                             } else if ($(this).html().includes('muslim')) {
-    
-                                var dummy = TITLE_HALAL +
-                                    $(this)
-                                        .next()
-                                        .text()
-                                        .trim()
-                                        .replace(/\n+/g, '\n');
-    
+                                
+                                var dummy = filterData(TITLE_HALAL, $(this));
                                 menuArray.push(dummy);
     
                             } else if ($(this).html().includes('grab')) {
     
-                                var dummy = TITLE_GRAB +
-                                    $(this)
-                                        .next()
-                                        .text()
-                                        .trim()
-                                        .replace(/\n+/g, '\n');
-    
+                                var dummy = filterData(TITLE_GRAB, $(this));
                                 menuArray.push(dummy);
     
                             } else if ($(this).html().includes('indian')) {
     
-                                var dummy = TITLE_INDIAN +
-                                    $(this)
-                                        .next()
-                                        .text()
-                                        .trim()
-                                        .replace(/\n+/g, '\n');
-    
+                                var dummy = filterData(TITLE_INDIAN, $(this));
                                 menuArray.push(dummy);
-    
+                            
                             }
     
                         });
-    
+                    
                         menuArray.push(ENRICHMENT_MESSAGE);
-    
                         menuText = menuArray.join('\n\n');
-    
                         res.send(textMessage.messageWithMarkdown(menuText));
-    
-                    };
-    
+                    
+                    }
                 });
             } else {
                 var nullResponse = stringProcess.sendMenu(menuTime, "null_response");
                 var suggestionRelated = stringProcess.sendMenu(menuTime, "suggestion_related");
                 res.send(textMessage.messageWithMarkdownSuggestion(nullResponse, suggestionRelated));
             }
-            
+                
         })
-        .catch(function (err) {
-            console.log("error: " + err);
+        .catch(function(err) {
+            console.log("error:123333 " + err);
         })
+}
+
+function filterData(title, cheerioObject) {
+    return title + cheerioObject.next()
+                            .html()
+                            .replace(/[<]br[>]/g, '\n')
+                            .replace(/[<][/]p[>]/g, '')
+                            .replace(/[<]p[>]/g, '')
+                            .replace(/&amp;/g, '&')
+                            .replace(/&#xA0;/g, ' ')
+                            .replace(/\n+/g, '\n');
 }
